@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <template id="event_registration_report_template_attest">
+      <t t-call="web.html_container">
+         <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+               <t t-set="o" t-value="o.with_context(lang=lang)" />
+               <div class="page">
+                  <p style="page-break-before:always;" />
+
+                  <div class="row">
+                     <div class="col-12 text-left" style="height: 260mm; padding-top: 0; font-family: Arial, sans-serif; line-height:1; ">
+                        <table style="width:100%;height:4cm">
+                           <tr>
+                              <td style="width:33.33%;vertical-align:bottom;" class="text-left">
+                                 <img t-att-src="'/registratie_attest/static/img/logo-succesinvest.jpg'" style="max-width:5cm;max-height:4cm" alt="Logo Succes Invest" />
+                              </td>
+                              <td style="width:33.33%;vertical-align:bottom; " class="text-center">
+                                 <h1 style="margin-bottom: 0mm; font-family: Arial; font-weight:bold; font-size: 28px; text-align:center;">Attest van opleiding</h1>
+                              </td>
+                              <td style="width:33.33%;vertical-align:bottom;" class="text-right">
+                                 <t t-if="o.event_id.organizer_id and o.event_id.organizer_id.image_1920 and o.event_id.organizer_id.is_company">
+                                    <img t-att-src="image_data_uri(o.event_id.organizer_id.image_1920)" style="max-height:4cm; max-width:5cm;" alt="Logo" />
+                                 </t>
+                              </td>
+                           </tr>
+                        </table>
+
+                        <br />
+
+                        <div style="background-color:#AAAAAA; border:1px solid #000000; font-family: Arial; font-weight:bold; font-size:36px;" class="row">
+                           <div class="col-12 text-center" style="padding: 2mm;">
+                              <span style="display:inline-block">ATTEST VAN OPLEIDING</span>
+                           </div>
+                        </div>
+
+                        <br />
+
+                        <div class="text-center" style="font-size:20px; width: 100%; line-height: 1.25;">
+                           Attestnummer
+                           <span t-field="o.attest_no" />
+                           <br />
+                           <br />
+                           Ondergetekende, Claude Monserez, verklaart hierbij
+                        </div>
+
+                        <br />
+
+                        <div style="border:1px solid #000000; font-size:24px;" class="row text-center">
+                           <div class="col-12 text-center" style="padding:2mm;">
+                              <span t-field="o.name" style="font-weight:bold;line-height: 1.25;" />
+                              <br />
+                              <span t-field="o.partner_id.parent_id.name" />
+                           </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                           <div class="col-12 text-center" style="font-size:20px; line-height: 1.25;">
+                              op
+                              <span itemprop="startDate" t-field="o.event_id.with_context(tz=o.event_id.date_tz).date_begin" t-options="{&quot;format&quot;: &quot;d/MM/yyyy&quot;}" />
+                              heeft deelgenomen aan de opleiding
+                           </div>
+                        </div>
+
+                        <br />
+                        <br />
+
+                        <t t-set="sessionTimeDiff" t-value="(o.event_id.with_context(tz=o.event_id.date_tz).date_end - o.event_id.with_context(tz=o.event_id.date_tz).date_begin)" />
+                        <t t-set="sessionLengthInHours" t-value="sessionTimeDiff.days * 24 + sessionTimeDiff.seconds / 3600" />
+                        
+                        <div style="border:2px solid #000000; font-size:24px;" class="row">
+                           <div class="col-12 text-center" style="padding: 3mm;">
+                              <span style="font-weight:bold; text-transform: uppercase;" t-field="o.event_id.name" />
+                              <br />
+                              <br />
+                              Duur:
+                              <t t-esc="str(sessionLengthInHours).replace('.',',')" />
+                              uur
+                           </div>
+                        </div>
+
+                        <br />
+                        
+                        <div class="row">
+                           <div class="col-12" style="font-size: 14px; font-style: italic; padding: 1mm;">De opleiding geldt als opleiding voor het veilig gebruiken van een arbeidsmiddel - specifiek: arbeidsmiddelen voor het aanslaan van lasten - volgens de bepalingen van art. IV.2-4 van de Codex over Welzijn op het werk.</div>
+                        </div>
+
+                        <br />
+                        <br />
+
+                        <div class="row">
+                           <div class="col-12 text-center" style="font-size:20px: line-height: 1.25;">
+                              Zwevegem,
+                              <span t-esc="o.event_id.date_begin" t-options="{'widget': 'datetime', 'format': 'd/MM/yyyy'}" />
+                              ,
+                              <br />
+                              <br />
+                              Claude Monserez
+                              <br />
+                              <br />
+                              <img t-att-src="'/registratie_attest/static/img/signature.jpg'" style="max-width:200px;" />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="row" style="border:1px solid #000000;">
+                     <div class="col-6 text-left" style="font-size:10px; padding: 1mm; padding-left: 2mm;">
+                        Succes Invest - Movan Cash Flow Management BC
+                        <br />
+                        Scheldestraat 49C - 8553 Otegem
+                        <br />
+                        056 37 42 06
+                        <br />
+                        <span style="text-decoration:underline">info@succesinvest.be</span>
+                        -
+                        <span style="text-decoration:underline">www.succesinvest.be</span>
+                     </div>
+                     <div class="col-6 text-right" style="font-size:10px; padding: 1mm; padding-right: 2mm;">
+                        <t t-if="o.event_id.organizer_id">
+                           <span t-field="o.event_id.organizer_id.display_name" />
+                           <br />
+                           <span t-field="o.event_id.organizer_id.street" />
+                           -
+                           <span t-field="o.event_id.organizer_id.zip" />
+                           <span t-field="o.event_id.organizer_id.city" />
+                           <br />
+                           <span t-field="o.event_id.organizer_id.phone" />
+                           <br />
+                           <t t-if="o.event_id.organizer_id.website">
+                              <span style="text-decoration:underline" t-field="o.event_id.organizer_id.website" />
+                           </t>
+                           <t t-if="o.event_id.organizer_id.email_formatted and o.event_id.organizer_id.website">-</t>
+                           <t t-if="o.event_id.organizer_id.email_normalized">
+                              <span style="text-decoration:underline" t-field="o.event_id.organizer_id.email_normalized" />
+                           </t>
+                        </t>
+                     </div>
+                  </div>
+                  
+               </div>
+            </t>
+         </t>
+      </t>
+   </template>
+</odoo>

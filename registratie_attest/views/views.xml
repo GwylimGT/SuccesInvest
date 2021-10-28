@@ -1,0 +1,92 @@
+<odoo>
+  <data>
+
+    <record id="papeformat_event_registration_attest_opleiding" model="report.paperformat">
+        <field name="name">Custom Paperformat for the Event Registration - Attest van opleiding</field>
+        <field name="default" eval="False"/>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">8</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="report_event_attest_opleiding" model="ir.actions.report">
+        <field name="name">Attest van opleiding</field>
+        <field name="model">event.registration</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">registratie_attest.event_registration_report_template_attest</field>
+        <field name="report_file">registratie_attest.event_registration_report_template_attest</field>
+        <field name="print_report_name">'attest-' + (object.name or str(obj.id))[0:28].lower().replace(' ','-')</field>
+        <field name="attachment">'attest-' + (object.name or str(obj.id))[0:15].lower().replace(' ','-') + '-' + time.strftime('%Y%m%d%H%M')</field>
+        <field name="paperformat_id" ref="registratie_attest.papeformat_event_registration_attest_opleiding"/>
+        <field name="binding_model_id" ref="event.model_event_registration"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record model="ir.ui.view" id="view_event_type_form_abbr">
+      <field name="name">event.type.form.abbr</field>
+      <field name="model">event.type</field>
+      <field name="inherit_id" ref="event.view_event_type_form" />
+      <field eval="1" name="priority" />
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="/form/sheet/group/group[1]/div[2]" position="before">
+            <div colspan="2" class="o_checkbox_optional_field">
+              <label for="abbreviation" string="Afkorting"/>
+              <field name="abbreviation"/>
+            </div>
+          </xpath>
+        </data>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_event_form_needs_rrno">
+      <field name="name">event.event.form.needsrrno</field>
+      <field name="model">event.event</field>
+      <field name="inherit_id" ref="event.view_event_form" />
+      <field eval="1" name="priority" />
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="//group/group[2]/field[@name='auto_confirm']" position="before">
+            <field name="needs_rrno"/>
+          </xpath>
+        </data>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_event_registration_form_attest_no">
+      <field name="name">event.registration.form.attestno</field>
+      <field name="model">event.registration</field>
+      <field name="inherit_id" ref="event.view_event_registration_form" />
+      <field eval="1" name="priority" />
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="/form/sheet/group/group[1]/field[@name='mobile']" position="before">
+              <field name="attest_no"/>
+              <field name="rrno"/>
+          </xpath>
+        </data>
+      </field>
+    </record>
+
+    <!--record model="ir.ui.view" id="registration_attendee_details_rrno">
+	<field name="name">website.event.registration_attendee_details</field>
+      <field name="inherit_id" ref="website_event.registration_attendee_details" />
+      <field eval="1" name="priority" />
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="/div/div/form/div/t[3]/t/div/div/div[3]/label/" position="before">
+            <label>Rijksregisternummer <small>(Veplicht)</small></label>
+          </xpath>
+        </data>
+      </field>
+    </record-->
+
+  </data>
+</odoo>
